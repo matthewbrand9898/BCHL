@@ -8,8 +8,8 @@ initialize();
 
 async function initialize() {
     // create db if it doesn't already exist
-    const { host, port, user, password, database } = config.database;
-    db.connection = await mysql.createConnection('mysql://bebe19c45805a2:9b0bb6ca@us-cdbr-east-03.cleardb.com/heroku_9dedb930f2ef1f5?reconnect=true');
+    const { host, user, password, database } = config.database;
+    db.connection = await mysql.createPool('{ host, user, password, database }');
     await db.connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
   //  await db.connection.query(`CREATE DATABASE IF NOT EXISTS \`BCHAddressPool\`;`);
     await db.connection.query(`CREATE TABLE IF NOT EXISTS heroku_9dedb930f2ef1f5 . BCHAddresses (id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY,BCHAddress VARCHAR(100) NOT NULL) ;`);
