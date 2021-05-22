@@ -1,0 +1,10 @@
+﻿{
+    "database": {
+        "host": "localhost",
+        "port": 3306,
+        "user": "root",
+        "password": "Eggplant1998.",
+        "database": "RegisteredUsers"
+    },
+    "secret": "PD+4kzpWg0OIv9pqjfg3zA==oMjCx3GdJ06GOJGRcKvyew==i6KOkvrFoEmCSpMVxgLRAg==QcvCZdE+8kmr22YexJmNMQ=="
+}

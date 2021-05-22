@@ -1,0 +1,27 @@
+{
+  "network": "mainnet",
+  "mnemonic": "mouse ready raccoon forward rather throw lift sorry silver cave glow shine",
+  "derivation": 245,
+  "rootAddress": "bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7",
+  "balance": 0,
+  "nextAddress": 4,
+  "hasBalance": [],
+  "addresses": [
+    [
+      0,
+      "bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7"
+    ],
+    [
+      1,
+      "bitcoincash:qppt7c6zdpdsrcxry6qneenlttewyejadcd29q67f7"
+    ],
+    [
+      2,
+      "bitcoincash:qzc9ccl0qfxjem8cvge4n4dtwln5jxsptckf29ee4q"
+    ],
+    [
+      3,
+      "bitcoincash:qppuk0p8xg0y408l9jcay7ufa740afx8eys7q2hg2v"
+    ]
+  ]
+}
