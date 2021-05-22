@@ -30,7 +30,7 @@ async  Lotto_run() {
     var obj = JSON.parse(str);
 var keys = Object.keys(obj);
 
-
+  
         if(typeof obj[keys[0]] !== 'undefined' && obj[keys[0]]  !== null)
          await this.sendBch_.SendBch(this.filename,'bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7',1000,obj[keys[0]].BCHAddress)
 

@@ -89,15 +89,17 @@ async function getUser(id) {
 }
 
 async function buyticket(user) {
-    const purchase = await sendBch_.SendBch(filename,user.BCHAddress,1000,'bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7')
+   const purchase = await sendBch_.SendBch(filename,user.BCHAddress,1000,'bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7')
     //console.log(purchase)
 
 
   let bchadd = user.BCHAddress
     if(purchase) {
+      user.Ticket ++
+      console.log(user.Ticket)
+       await update(user.id,user)
         await db.connection.query(`INSERT INTO bchaddresspool . bchaddresses  (BCHAddress) VALUES ('${bchadd}');`);
-             user.Ticket ++
-              await update(user.id,user)
+
       //  console.log(bchadd)
    }
 
