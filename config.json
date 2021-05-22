@@ -1,10 +1,10 @@
 ﻿{
     "database": {
-        "host": "localhost",
+        "host": "us-cdbr-east-03.cleardb.com",
         "port": 3306,
-        "user": "root",
-        "password": "Eggplant1998.",
-        "database": "RegisteredUsers"
+        "user": "bebe19c45805a2",
+        "password": "9b0bb6ca",
+        "database": "heroku_9dedb930f2ef1f5"
     },
     "secret": "PD+4kzpWg0OIv9pqjfg3zA==oMjCx3GdJ06GOJGRcKvyew==i6KOkvrFoEmCSpMVxgLRAg==QcvCZdE+8kmr22YexJmNMQ=="
 }

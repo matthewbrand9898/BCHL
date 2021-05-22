@@ -10,7 +10,7 @@ async function initialize() {
     // create db if it doesn't already exist
     const { host, port, user, password, database } = config.database;
     db.connection = await mysql.createConnection({ host, port, user, password });
-    await db.connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
+    await db.connection.query(`CREATE DATABASE IF NOT EXISTS \`RegisteredUsers\`;`);
     await db.connection.query(`CREATE DATABASE IF NOT EXISTS \`BCHAddressPool\`;`);
     await db.connection.query(`CREATE TABLE IF NOT EXISTS BCHAddressPool . BCHAddresses (id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY,BCHAddress VARCHAR(100) NOT NULL) ;`);
 
