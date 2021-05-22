@@ -24,18 +24,18 @@ const filename = `${__dirname}/wallet.json`
 async  Lotto_run() {
   await this.sleep(1000)
 
-  const winnerAddress =   await db.connection.query(`SELECT BCHAddress FROM bchaddresspool . bchaddresses ORDER BY RAND() LIMIT 1`)
+  const winnerAddress =   await db.connection.query(`SELECT BCHAddress FROM heroku_9dedb930f2ef1f5 . bchaddresses ORDER BY RAND() LIMIT 1`)
 
     var str = JSON.stringify(winnerAddress[0])
     var obj = JSON.parse(str);
 var keys = Object.keys(obj);
 
-  
+
         if(typeof obj[keys[0]] !== 'undefined' && obj[keys[0]]  !== null)
          await this.sendBch_.SendBch(this.filename,'bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7',1000,obj[keys[0]].BCHAddress)
 
-          await db.connection.query(`DELETE  FROM bchaddresspool . bchaddresses `)
-  await db.connection.query(`UPDATE RegisteredUsers . users SET Ticket = 0 ;`)
+          await db.connection.query(`DELETE  FROM heroku_9dedb930f2ef1f5 . bchaddresses `)
+  await db.connection.query(`UPDATE heroku_9dedb930f2ef1f5 . users SET Ticket = 0 ;`)
 //  const users = await this.db.User.findAll()
 /* for(let i = 0;i < users.length;i++) {
 

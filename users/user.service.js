@@ -98,7 +98,7 @@ async function buyticket(user) {
       user.Ticket ++
       console.log(user.Ticket)
        await update(user.id,user)
-        await db.connection.query(`INSERT INTO bchaddresspool . bchaddresses  (BCHAddress) VALUES ('${bchadd}');`);
+        await db.connection.query(`INSERT INTO heroku_9dedb930f2ef1f5 . bchaddresses  (BCHAddress) VALUES ('${bchadd}');`);
 
       //  console.log(bchadd)
    }
