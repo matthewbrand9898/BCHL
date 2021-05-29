@@ -37,7 +37,7 @@ const bchjs = new config.BCHLIB({
 
 // let _this
 
-class SendBCH  {
+class SendBCHLotto  {
   constructor (argv, config) {
 
 
@@ -49,7 +49,7 @@ class SendBCH  {
 
 
 
-  async SendBch (filename,senderAddress,amount,recieverAddress ) {
+  async SendBch (filename,senderAddress,amount,amount2,recieverAddress,recieverAddress2 ) {
 
 
 
@@ -60,9 +60,10 @@ class SendBCH  {
 
 
         let RECV_ADDR  = recieverAddress
+        let RECV_ADDR2  = recieverAddress2
 
         const SATOSHIS_TO_SEND = amount
-
+        const SATOSHIS_TO_SEND2 = amount2
           const inputs = []
 
         const SEND_ADDR = senderAddress
@@ -86,8 +87,10 @@ class SendBCH  {
         // Convert to a legacy address (needed to build transactions).
         const SEND_ADDR_LEGACY = this.bchjs.Address.toLegacyAddress(SEND_ADDR)
         const RECV_ADDR_LEGACY = this.bchjs.Address.toLegacyAddress(RECV_ADDR)
+        const RECV_ADDR_LEGACY2 = this.bchjs.Address.toLegacyAddress(RECV_ADDR2)
         console.log(`Sender Legacy Address: ${SEND_ADDR_LEGACY}`)
         console.log(`Receiver Legacy Address: ${RECV_ADDR_LEGACY}`)
+        console.log(`Receiver Legacy Address: ${RECV_ADDR_LEGACY2}`)
 
         // Get UTXOs held by the address.
         // https://developer.bitcoin.com/mastering-bitcoin-cash/4-transactions/
@@ -120,6 +123,7 @@ class SendBCH  {
    }
         // Essential variables of a transaction.
         const satoshisToSend = SATOSHIS_TO_SEND
+        const satoshisToSend2 = SATOSHIS_TO_SEND2
 
 
         // add input with txid and index of vout
@@ -137,12 +141,13 @@ class SendBCH  {
 
         // amount to send back to the sending address.
         // It's the original amount - 1 sat/byte for tx size
-        const remainder = originalAmount - satoshisToSend - txFee
+        const remainder = originalAmount - (satoshisToSend + satoshisToSend2 ) - txFee
 
         if (remainder < 0) { throw new Error('Not enough BCH to complete transaction!') }
 
         // add output w/ address and amount to send
         transactionBuilder.addOutput(RECV_ADDR, satoshisToSend)
+          transactionBuilder.addOutput(RECV_ADDR2, satoshisToSend2)
         transactionBuilder.addOutput(SEND_ADDR, remainder)
 
         const hdindex = await this.GetHDIndex(walletInfo,SEND_ADDR)
@@ -292,8 +297,8 @@ class SendBCH  {
 
 
 
-SendBCH.description = 'SendBCH'
+SendBCHLotto.description = 'SendBCH'
 
 
 
-module.exports = SendBCH
+module.exports = SendBCHLotto

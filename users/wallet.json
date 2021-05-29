@@ -4,9 +4,13 @@
   "derivation": 245,
   "rootAddress": "bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7",
   "balance": 0,
-  "nextAddress": 0,
+  "nextAddress": 1,
   "hasBalance": [],
   "addresses": [
+    [
+      0,
+      "bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7"
+    ],
 
   ]
 }

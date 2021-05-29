@@ -6,17 +6,28 @@ const GetAddress = require('slp-cli-wallet/src/commands/get-address')
 const getAddress = new GetAddress()
 const SendBCH = require('_helpers/send-bch')
 const sendBch_ = new SendBCH()
+const fs = require('fs').promises;
 //const GetBalanceByAddress = require('slp-cli-wallet/src/commands/update-balances')
 //const getbal = new GetBalanceByAddress()
+
+const NETWORK = 'mainnet'
+// REST API servers.
+const BCHN_MAINNET = 'https://bchn.fullstack.cash/v4/'
+const BCHJS = require('@psf/bch-js')
+let bchjs
+if (NETWORK === 'mainnet') bchjs = new BCHJS({ restURL: BCHN_MAINNET })
+let txid
 const filename = `${__dirname}/wallet.json`
 
 module.exports = {
     authenticate,
-    getAll,
-    getById,
     create,
     update,
-   buyticket
+   buyticket,
+   withdraw,
+   getbalance,
+   getlastlottowinner,
+   currentEntries
 };
 
 async function authenticate({ username, password }) {
@@ -89,21 +100,92 @@ async function getUser(id) {
 }
 
 async function buyticket(user) {
-   const purchase = await sendBch_.SendBch(filename,user.BCHAddress,1000,'bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7')
-    //console.log(purchase)
-
+ let current = await bchjs.Price.getBchUsd();
+ let usdToSat = Math.round(5 / current * 100000000)
+   const returnvalues = await sendBch_.SendBch(filename,user.BCHAddress,usdToSat,'bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7')
+   var obj = JSON.parse(returnvalues);
+   var keys = Object.keys(obj);
 
   let bchadd = user.BCHAddress
-    if(purchase) {
+    if(obj[keys[1]]) {
       user.Ticket ++
-      console.log(user.Ticket)
+
        await update(user.id,user)
-        await db.connection.query(`INSERT INTO heroku_9dedb930f2ef1f5 . bchaddresses  (BCHAddress) VALUES ('${bchadd}');`);
+        await db.connection.query(`INSERT INTO UserData . BCHAddresses  (BCHAddress) VALUES ('${bchadd}');`);
 
       //  console.log(bchadd)
    }
 
 
+
+}
+
+
+async function getbalance(user) {
+  try {
+
+    var balance = await bchjs.Electrumx.balance(user.BCHAddress)
+   let current = await bchjs.Price.getBchUsd();
+
+   balance = balance.balance.confirmed/100000000  * current
+  user.balance = balance
+
+
+  return user
+
+    }
+    catch(err)
+     {
+  console.log(err);
+    }
+
+}
+
+
+async function getlastlottowinner(txid) {
+
+  try {
+    const data = await fs.readFile("winnerTxid.txt", "binary");
+       txid.txid = data.toString();
+
+       return txid;
+
+
+    }
+    catch(err)
+     {
+  console.log(err);
+    }
+}
+
+async function currentEntries(currentEntries) {
+
+  try {
+
+  entries = await db.connection.query(`SELECT COUNT(*) AS Count FROM UserData . BCHAddresses `)
+  var cej = JSON.stringify(entries[0])
+  var obj = JSON.parse(cej);
+  var keys = Object.keys(obj);
+    currentEntries.currentEntries = obj[keys[0]].Count
+
+       return currentEntries
+
+    }
+    catch(err)
+     {
+  console.log(err);
+    }
+}
+
+
+
+
+async function withdraw(user,withdrawaddress,withdrawamount) {
+  let current = await bchjs.Price.getBchUsd();
+  let usdToSat = Math.round(withdrawamount / current * 100000000)
+
+   await sendBch_.SendBch(filename,user.BCHAddress,usdToSat,withdrawaddress)
+    //console.log(purchase)
 
 }
 

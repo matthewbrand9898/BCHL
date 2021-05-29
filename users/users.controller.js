@@ -5,12 +5,7 @@ const validateRequest = require('_middleware/validate-request');
 const authorize = require('_middleware/authorize')
 const userService = require('./user.service');
 
-const NETWORK = 'mainnet'
-// REST API servers.
-const BCHN_MAINNET = 'https://bchn.fullstack.cash/v4/'
-const BCHJS = require('@psf/bch-js')
-let bchjs
-if (NETWORK === 'mainnet') bchjs = new BCHJS({ restURL: BCHN_MAINNET })
+
 
 
 // routes
@@ -21,7 +16,11 @@ router.post('/register', registerSchema, register);
 //router.get('/:id', authorize(), getById);
 //router.put('/update', authorize(), updateSchema, update);
 router.post('/buyticket', authorize(), buyticket);
-router.post('/getbalance', authorize(), getBalance);
+router.post('/withdraw', authorize(), withdraw);
+router.post('/getbalance', authorize(), getbalance);
+router.post('/getlastlottowinner', authorize(), getlastlottowinner);
+router.post('/currentEntries', authorize(), currentEntries);
+
 
 module.exports = router;
 
@@ -97,31 +96,48 @@ function update(req, res, next) {
 
 
 
-async function getBalance(req,res,next) {
-
-  try {
-
-    var balance = await bchjs.Electrumx.balance(req.user.BCHAddress)
-   let current = await bchjs.Price.getBchUsd();
-
-   balance = balance.balance.confirmed/100000000  * current
+async function getbalance(req,res,next) {
 
 
-      res.json({ message: balance});
+        userService.getbalance(req.user)
+        .then(() => res.json(req.user.balance ))
+        .catch(next);
 
 
+}
+async function getlastlottowinner(req,res,next) {
 
-    }
-    catch(err)
-     {
-  console.log(err);
-    }
+
+        userService.getlastlottowinner(req.body)
+        .then(() => res.json( req.body))
+        .catch(next);
+
 
 }
 
+async function currentEntries(req,res,next) {
+
+
+        userService.currentEntries(req.body)
+        .then(() => res.json( req.body))
+        .catch(next);
+
+
+}
+
+
 function buyticket(req, res, next) {
   userService.buyticket(req.user)
-  .then(() => res.json(req.user ))
+  .then(() => res.json(req.user.Ticket ))
+  .catch(next);
+
+}
+
+function withdraw(req, res, next) {
+
+
+  userService.withdraw(req.user,req.body[1].address,req.body[1].amount)
+  .then(() => res.json({message: "successfully sent " + req.body[1].amount + " to " +  req.body[1].address}))
   .catch(next);
 
 }
