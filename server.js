@@ -20,14 +20,14 @@ app.use(cors());
 // api routes
 app.use('/users', require('./users/users.controller'));
 app.use(errorHandler);
-//app.use(express.static(path.join(__dirname, '/dist')));
+app.use(express.static(path.join(__dirname, '/dist')));
 
-//app.get("/", (req, res) => {
+app.get("/", (req, res) => {
 
 
-//res.sendFile(path.join(__dirname, '/dist/index.html'));
+res.sendFile(path.join(__dirname, '/dist/index.html'));
 
-//});
+});
 cron.schedule('*/1 * * * *', function() {
   lottorun_.Lotto_run()
 });
