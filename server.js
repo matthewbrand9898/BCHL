@@ -28,7 +28,21 @@ app.get("/", (req, res) => {
 res.sendFile(path.join(__dirname, '/dist/index.html'));
 
 });
-cron.schedule('*/1 * * * *', function() {
+
+app.get("/login", (req, res) => {
+
+
+res.sendFile(path.join(__dirname, '/dist/index.html'));
+
+});
+app.get("/register", (req, res) => {
+
+
+res.sendFile(path.join(__dirname, '/dist/index.html'));
+
+});
+
+cron.schedule('0 0 * * *', function() {
   lottorun_.Lotto_run()
 });
 
