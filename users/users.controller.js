@@ -127,8 +127,8 @@ async function currentEntries(req,res,next) {
 
 
 function buyticket(req, res, next) {
-  userService.buyticket(req.user)
-  .then(() => res.json(req.user.Ticket ))
+  userService.buyticket(req.body)
+  .then(user => res.json(user))
   .catch(next);
 
 }

@@ -117,10 +117,11 @@ async function buyticket(user) {
    } else {
 
      throw 'Purchase unsuccessful, please check your balance.';
+
    }
 
 
-
+return user;
 }
 
 
