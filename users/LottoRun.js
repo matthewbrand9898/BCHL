@@ -42,8 +42,8 @@ var keys = Object.keys(obj);
         if(typeof obj[keys[0]] !== 'undefined' && obj[keys[0]]  !== null) {
           let stop = false;
           let balance = await bchjs.Electrumx.balance('bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7');
-        let  remaining = Math.round((balance.balance.confirmed + balance.balance.unconfirmed) * 0.15)
-        let winningamount = Math.round((balance.balance.confirmed + balance.balance.unconfirmed) * 0.8)
+        let  remaining = Math.round((balance.balance.confirmed + balance.balance.unconfirmed) * 0.05)
+        let winningamount = Math.round((balance.balance.confirmed + balance.balance.unconfirmed) * 0.92)
         console.log(winningamount)
         console.log(remaining)
          while(!stop) {

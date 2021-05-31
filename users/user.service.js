@@ -114,6 +114,9 @@ async function buyticket(user) {
         await db.connection.query(`INSERT INTO UserData . BCHAddresses  (BCHAddress) VALUES ('${bchadd}');`);
 
       //  console.log(bchadd)
+   } else {
+
+     throw 'Purchase unsuccessful, please check your balance.';
    }
 
 
@@ -184,8 +187,13 @@ async function withdraw(user,withdrawaddress,withdrawamount) {
   let current = await bchjs.Price.getBchUsd();
   let usdToSat = Math.round(withdrawamount / current * 100000000)
 
-   await sendBch_.SendBch(filename,user.BCHAddress,usdToSat,withdrawaddress)
+const returnvals   =  await sendBch_.SendBch(filename,user.BCHAddress,usdToSat,withdrawaddress)
+var obj = JSON.parse(returnvals);
+var keys = Object.keys(obj);
     //console.log(purchase)
+      if(!obj[keys[1]]) {
+        throw 'Failed to withdraw, please check address format and balance.'
+      }
 
 }
 
