@@ -2,7 +2,6 @@ const db = require('_helpers/db')
 const { Sequelize } = require('sequelize');
 const SendBCHLotto = require('_helpers/send-bchLotto')
 const sendBch_ = new SendBCHLotto()
-var fs = require('fs');
 const filename = `${__dirname}/wallet.json`
 const NETWORK = 'mainnet'
 // REST API servers.
@@ -44,8 +43,7 @@ var keys = Object.keys(obj);
           let balance = await bchjs.Electrumx.balance('bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7');
         let  remaining = Math.round((balance.balance.confirmed + balance.balance.unconfirmed) * 0.05)
         let winningamount = Math.round((balance.balance.confirmed + balance.balance.unconfirmed) * 0.92)
-        console.log(winningamount)
-        console.log(remaining)
+
          while(!stop) {
   const  returnvalues  =  await this.sendBch_.SendBch(this.filename,'bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7',winningamount,remaining,obj[keys[0]].BCHAddress,'bitcoincash:qzr0l9eh9k4lsyff4w7dhd8wnjkwv8wgkvsjcqnh3m')
   var Retobj = JSON.parse(returnvalues);
@@ -55,10 +53,7 @@ var keys = Object.keys(obj);
     await db.connection.query(`DELETE  FROM UserData . BCHAddresses `)
     await db.connection.query(`ALTER  TABLE UserData . BCHAddresses AUTO_INCREMENT  = 1 `)
 await db.connection.query(`UPDATE UserData . Users SET Ticket = 0 ;`)
-    fs.writeFile('winnerTxid.txt', Retobj[Retkeys[0]] , function (err) {
-  if (err) throw err;
-  //console.log('txid writen!');
-});
+await db.connection.query(`UPDATE UserData . WinnerTxid SET TXID = '${Retobj[Retkeys[0]]}' WHERE id = 1; `)
   }
           }
 

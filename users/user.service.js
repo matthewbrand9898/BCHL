@@ -6,7 +6,7 @@ const GetAddress = require('slp-cli-wallet/src/commands/get-address')
 const getAddress = new GetAddress()
 const SendBCH = require('_helpers/send-bch')
 const sendBch_ = new SendBCH()
-const fs = require('fs').promises;
+
 //const GetBalanceByAddress = require('slp-cli-wallet/src/commands/update-balances')
 //const getbal = new GetBalanceByAddress()
 
@@ -149,8 +149,13 @@ async function getbalance(user) {
 async function getlastlottowinner(txid) {
 
   try {
-    const data = await fs.readFile("winnerTxid.txt", "binary");
-       txid.txid = data.toString();
+    const winnerTxid =   await db.connection.query(`SELECT * FROM UserData . WinnerTxid  WHERE id = 1 `)
+
+      var str = JSON.stringify(winnerTxid[0])
+      var obj = JSON.parse(str);
+  var keys = Object.keys(obj);
+
+       txid.txid = obj[keys[0]].TXID;
 
        return txid;
 

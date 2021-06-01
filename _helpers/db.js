@@ -24,6 +24,7 @@ async function initialize() {
       await db.connection.query(`CREATE DATABASE IF NOT EXISTS ${database} ;`);
     //  await db.connection.query(`CREATE DATABASE IF NOT EXISTS \`BCHAddressPool\`;`);
       await db.connection.query(`CREATE TABLE IF NOT EXISTS ${database}  . BCHAddresses (id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY,BCHAddress VARCHAR(100) NOT NULL) ;`);
+      await db.connection.query(`CREATE TABLE IF NOT EXISTS ${database}  . WinnerTxid (id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY,TXID VARCHAR(255) NOT NULL) ;`);
 
 
 
