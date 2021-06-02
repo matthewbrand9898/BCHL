@@ -101,7 +101,7 @@ async function getUser(id) {
 
 async function buyticket(user) {
  let current = await bchjs.Price.getBchUsd();
- let usdToSat = Math.round(5 / current * 100000000)
+ let usdToSat = Math.round(1 / current * 100000000)
    const returnvalues = await sendBch_.SendBch(filename,user.BCHAddress,usdToSat,'bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7')
    var obj = JSON.parse(returnvalues);
    var keys = Object.keys(obj);
