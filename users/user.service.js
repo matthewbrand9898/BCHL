@@ -120,8 +120,10 @@ async function buyticket(user) {
 
    }
 
+   return user;
 
-return user;
+
+
 }
 
 
