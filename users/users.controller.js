@@ -40,8 +40,7 @@ function authenticate(req, res, next) {
 
 function registerSchema(req, res, next) {
     const schema = Joi.object({
-      firstName: Joi.string().empty(''),
-      lastName: Joi.string().empty(''),
+    
       username: Joi.string().empty(''),
       password: Joi.string().min(6).empty(''),
       BCHAddress: Joi.string().empty(''),
@@ -74,8 +73,7 @@ function getById(req, res, next) {
 
 function updateSchema(req, res, next) {
     const schema = Joi.object({
-        firstName: Joi.string().empty(''),
-        lastName: Joi.string().empty(''),
+
         username: Joi.string().empty(''),
         password: Joi.string().min(6).empty(''),
         BCHAddress: Joi.string().empty(''),
