@@ -27,7 +27,8 @@ module.exports = {
    withdraw,
    getbalance,
    getlastlottowinner,
-   currentEntries
+   currentEntries,
+   currentPrize
 };
 
 async function authenticate({ username, password }) {
@@ -99,19 +100,22 @@ async function getUser(id) {
     return user;
 }
 
-async function buyticket(user) {
+async function buyticket(user,betAmount) {
+  let date = new Date();
+
+  if(date.getHours() < 23) {
  let current = await bchjs.Price.getBchUsd();
  let usdToSat = Math.round(1 / current * 100000000)
    const returnvalues = await sendBch_.SendBch(filename,user.BCHAddress,usdToSat,'bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7')
    var obj = JSON.parse(returnvalues);
    var keys = Object.keys(obj);
-
+   console.log(betAmount)
   let bchadd = user.BCHAddress
     if(obj[keys[1]]) {
       user.Ticket ++
-
+      betAmount = Math.round(betAmount);
        await update(user.id,user)
-        await db.connection.query(`INSERT INTO UserData . BCHAddresses  (BCHAddress) VALUES ('${bchadd}');`);
+        await db.connection.query(`INSERT INTO UserData . BCHAddresses  (BCHAddress,betNumber) VALUES ('${bchadd}',${betAmount});`);
 
       //  console.log(bchadd)
    } else {
@@ -119,7 +123,9 @@ async function buyticket(user) {
      throw 'Purchase unsuccessful, please check your balance.';
 
    }
-
+} else {
+  throw 'Can not buy a ticket 1 hour before the draw'
+}
    return user;
 
 
@@ -133,7 +139,7 @@ async function getbalance(user) {
     var balance = await bchjs.Electrumx.balance(user.BCHAddress)
    let current = await bchjs.Price.getBchUsd();
 
-   balance = balance.balance.confirmed/100000000  * current
+   balance = (balance.balance.confirmed + balance.balance.unconfirmed)/100000000  * current
   user.balance = balance
 
 
@@ -180,6 +186,26 @@ async function currentEntries(currentEntries) {
     currentEntries.currentEntries = obj[keys[0]].Count
 
        return currentEntries
+
+    }
+    catch(err)
+     {
+  console.log(err);
+    }
+}
+
+async function currentPrize(currentPrize) {
+
+  try {
+
+    var balance = await bchjs.Electrumx.balance('bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7')
+   let current = await bchjs.Price.getBchUsd();
+
+   balance = (balance.balance.confirmed + balance.balance.unconfirmed)/100000000  * current
+
+    currentPrize.currentPrize = balance
+
+       return currentPrize
 
     }
     catch(err)

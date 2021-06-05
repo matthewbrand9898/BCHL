@@ -20,6 +20,7 @@ router.post('/withdraw', authorize(), withdraw);
 router.post('/getbalance', authorize(), getbalance);
 router.post('/getlastlottowinner', authorize(), getlastlottowinner);
 router.post('/currentEntries', authorize(), currentEntries);
+router.post('/currentPrize', authorize(), currentPrize);
 
 
 module.exports = router;
@@ -40,7 +41,7 @@ function authenticate(req, res, next) {
 
 function registerSchema(req, res, next) {
     const schema = Joi.object({
-    
+
       username: Joi.string().empty(''),
       password: Joi.string().min(6).empty(''),
       BCHAddress: Joi.string().empty(''),
@@ -123,9 +124,19 @@ async function currentEntries(req,res,next) {
 
 }
 
+async function currentPrize(req,res,next) {
+
+
+        userService.currentPrize(req.body)
+        .then(() => res.json( req.body))
+        .catch(next);
+
+
+}
+
 
 function buyticket(req, res, next) {
-  userService.buyticket(req.body)
+  userService.buyticket(req.body[0],req.body[1].amount)
   .then(user => res.json(user))
   .catch(next);
 

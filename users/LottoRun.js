@@ -30,8 +30,19 @@ if (NETWORK === 'mainnet') bchjs = new BCHJS({ restURL: BCHN_MAINNET })
 
 async  Lotto_run() {
 
+  try{
 
-  const winnerAddress =   await db.connection.query(`SELECT BCHAddress FROM UserData . BCHAddresses ORDER BY RAND() LIMIT 1`)
+  let getBlockHash = await bchjs.Blockchain.getBestBlockHash();
+  let randNumber = parseInt(getBlockHash, 16) ;
+  randNumber = randNumber.toString();
+  randNumber = randNumber.substring(0,randNumber.length - 4);
+  let randomremainder = parseFloat(randNumber) % 1
+
+  let winnerid = randomremainder * 10000000000000000
+  winnerid = Math.round(winnerid % 1000000) + 1
+  console.log('winner id ' + winnerid )
+
+  const winnerAddress =   await db.connection.query(`SELECT BCHAddress FROM UserData . BCHAddresses WHERE betNumber = ${winnerid} LIMIT 1`)
 
     var str = JSON.stringify(winnerAddress[0])
     var obj = JSON.parse(str);
@@ -50,35 +61,18 @@ var keys = Object.keys(obj);
   var Retkeys = Object.keys(Retobj);
   if(Retobj[Retkeys[1]]) {
     stop = true
-    await db.connection.query(`DELETE  FROM UserData . BCHAddresses `)
-    await db.connection.query(`ALTER  TABLE UserData . BCHAddresses AUTO_INCREMENT  = 1 `)
-await db.connection.query(`UPDATE UserData . Users SET Ticket = 0 ;`)
+
 await db.connection.query(`UPDATE UserData . WinnerTxid SET TXID = '${Retobj[Retkeys[0]]}' WHERE id = 1; `)
-  }
-          }
+                        }
+                      }
+                }
+                await db.connection.query(`DELETE  FROM UserData . BCHAddresses `)
+                await db.connection.query(`ALTER  TABLE UserData . BCHAddresses AUTO_INCREMENT  = 1 `)
+            await db.connection.query(`UPDATE UserData . Users SET Ticket = 0 ;`)
 
-
-
-
-
-
+}catch(err) {
+  console.log(err)
 }
-//  const users = await this.db.User.findAll()
-/* for(let i = 0;i < users.length;i++) {
-
-  let   params = users[i].dataValues
-    params.Ticket = 0
-  //  console.log(params)
-
-
-    Object.assign(users[i], params);
-    await users[i].save();
-  //  console.console.log((users[i]));
-}
-*/
-
-  //  console.log(user.dataValues)
-
 }
   }
 module.exports = LottoRun
