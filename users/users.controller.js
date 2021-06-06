@@ -45,7 +45,9 @@ function registerSchema(req, res, next) {
       username: Joi.string().empty(''),
       password: Joi.string().min(6).empty(''),
       BCHAddress: Joi.string().empty(''),
-      Ticket: Joi.string().empty('')
+      Ticket: Joi.string().empty(''),
+      confirmPassword: Joi.string().min(6).empty(''),
+      email: Joi.string().empty('')
     });
     validateRequest(req, next, schema);
 }

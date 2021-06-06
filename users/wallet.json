@@ -4,7 +4,7 @@
   "derivation": 245,
   "rootAddress": "bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7",
   "balance": 0,
-  "nextAddress": 3,
+  "nextAddress": 6,
   "hasBalance": [],
   "addresses": [
     [
@@ -18,6 +18,18 @@
     [
       2,
       "bitcoincash:qzc9ccl0qfxjem8cvge4n4dtwln5jxsptckf29ee4q"
+    ],
+    [
+      3,
+      "bitcoincash:qppuk0p8xg0y408l9jcay7ufa740afx8eys7q2hg2v"
+    ],
+    [
+      4,
+      "bitcoincash:qzt6f44fyk3vk68v02qq0v8ldd25frljjc7tun8p9u"
+    ],
+    [
+      5,
+      "bitcoincash:qpkx7fc4kkr6lupzeke7jcjn7d67yke8csvjltjyvk"
     ]
   ]
 }

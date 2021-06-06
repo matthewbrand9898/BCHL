@@ -4,9 +4,10 @@ module.exports = model;
 
 function model(sequelize) {
     const attributes = {
-      
+
         BCHAddress: { type: DataTypes.STRING, allowNull: false },
         username: { type: DataTypes.STRING, allowNull: false },
+        email: { type: DataTypes.STRING, allowNull: false },
         hash: { type: DataTypes.STRING, allowNull: false },
         Ticket: { type: DataTypes.INTEGER,allowNull: false}
 
