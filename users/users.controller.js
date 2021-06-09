@@ -21,7 +21,8 @@ router.post('/getbalance', authorize(), getbalance);
 router.post('/getlastlottowinner', authorize(), getlastlottowinner);
 router.post('/currentEntries', authorize(), currentEntries);
 router.post('/currentPrize', authorize(), currentPrize);
-
+router.post('/getwinningRNG', authorize(), getwinningRNG);
+router.post('/getwinningRNGHash', authorize(), getwinningRNGHash);
 
 module.exports = router;
 
@@ -106,6 +107,27 @@ async function getbalance(req,res,next) {
 
 
 }
+
+async function getwinningRNG(req,res,next) {
+
+
+        userService.getwinningRNG(req.body)
+        .then(() => res.json( req.body))
+        .catch(next);
+
+
+}
+
+async function getwinningRNGHash(req,res,next) {
+
+
+        userService.getwinningRNGHash(req.body)
+        .then(() => res.json( req.body))
+        .catch(next);
+
+
+}
+
 async function getlastlottowinner(req,res,next) {
 
 
@@ -138,7 +160,7 @@ async function currentPrize(req,res,next) {
 
 
 function buyticket(req, res, next) {
-  userService.buyticket(req.body[0],req.body[1].amount)
+  userService.buyticket(req.body)
   .then(user => res.json(user))
   .catch(next);
 

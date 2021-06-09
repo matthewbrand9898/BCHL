@@ -135,7 +135,7 @@ class SendBCHLotto  {
           { P2PKH: 1 }
         )
         console.log(`Transaction byte count: ${byteCount}`)
-        const satoshisPerByte = 1.2
+        const satoshisPerByte = 1.5
         const txFee = Math.floor(satoshisPerByte * byteCount)
         console.log(`Transaction fee: ${txFee}`)
 
@@ -196,7 +196,7 @@ class SendBCHLotto  {
         }
       }
 
-        return JSON.stringify(returnvals)
+        return returnvals
     }
 
 

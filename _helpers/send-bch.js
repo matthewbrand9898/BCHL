@@ -191,7 +191,7 @@ class SendBCH  {
         }
       }
 
-        return JSON.stringify(returnvals)
+        return returnvals
     }
 
 

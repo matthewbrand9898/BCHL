@@ -28,7 +28,9 @@ module.exports = {
    getbalance,
    getlastlottowinner,
    currentEntries,
-   currentPrize
+   currentPrize,
+   getwinningRNG,
+   getwinningRNGHash
 };
 
 async function authenticate({ username, password }) {
@@ -107,22 +109,21 @@ async function getUser(id) {
     return user;
 }
 
-async function buyticket(user,betAmount) {
+async function buyticket(user) {
   let date = new Date();
 
   if(date.getHours() < 23) {
  let current = await bchjs.Price.getBchUsd();
  let usdToSat = Math.round(1 / current * 100000000)
    const returnvalues = await sendBch_.SendBch(filename,user.BCHAddress,usdToSat,'bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7')
-   var obj = JSON.parse(returnvalues);
-   var keys = Object.keys(obj);
-   console.log(betAmount)
+
+
   let bchadd = user.BCHAddress
-    if(obj[keys[1]]) {
+    if(returnvalues.Ticket) {
       user.Ticket ++
-      betAmount = Math.round(betAmount);
+
        await update(user.id,user)
-        await db.connection.query(`INSERT INTO UserData . BCHAddresses  (BCHAddress,betNumber) VALUES ('${bchadd}',${betAmount});`);
+        await db.connection.query(`INSERT INTO UserData . BCHAddresses  (BCHAddress) VALUES ('${bchadd}');`);
 
       //  console.log(bchadd)
    } else {
@@ -164,13 +165,11 @@ async function getbalance(user) {
 async function getlastlottowinner(txid) {
 
   try {
-    const winnerTxid =   await db.connection.query(`SELECT * FROM UserData . WinnerTxid  WHERE id = 1 `)
+    const winnerTxid =   await db.connection.query(`SELECT TXID FROM UserData . WinnerTxid  WHERE id = 1 `)
 
-      var str = JSON.stringify(winnerTxid[0])
-      var obj = JSON.parse(str);
-  var keys = Object.keys(obj);
 
-       txid.txid = obj[keys[0]].TXID;
+
+       txid.txid = winnerTxid[0][0].TXID;
 
        return txid;
 
@@ -187,10 +186,8 @@ async function currentEntries(currentEntries) {
   try {
 
   entries = await db.connection.query(`SELECT COUNT(*) AS Count FROM UserData . BCHAddresses `)
-  var cej = JSON.stringify(entries[0])
-  var obj = JSON.parse(cej);
-  var keys = Object.keys(obj);
-    currentEntries.currentEntries = obj[keys[0]].Count
+
+    currentEntries.currentEntries = entries[0][0].Count
 
        return currentEntries
 
@@ -200,6 +197,46 @@ async function currentEntries(currentEntries) {
   console.log(err);
     }
 }
+
+async function getwinningRNG(winningRNG) {
+
+  try {
+      const date = new Date();
+      if(date.getHours() == 23) {
+  winnerid = await db.connection.query(`SELECT RandomNumber FROM UserData . LottoRun WHERE id = 1 `)
+
+    winningRNG.RNG = winnerid[0][0].RandomNumber
+
+
+} else {
+    winningRNG.RNG = undefined;
+}
+  return winningRNG;
+    }
+    catch(err)
+     {
+  console.log(err);
+    }
+}
+
+async function getwinningRNGHash(winningRNGHash) {
+
+  try {
+
+  winneridHash = await db.connection.query(`SELECT RandomNumberHash FROM UserData . LottoRun WHERE id = 1 `)
+
+    winningRNGHash.RNGHash = winneridHash[0][0].RandomNumberHash
+
+
+
+  return winningRNGHash;
+    }
+    catch(err)
+     {
+  console.log(err);
+    }
+}
+
 
 async function currentPrize(currentPrize) {
 
@@ -229,10 +266,9 @@ async function withdraw(user,withdrawaddress,withdrawamount) {
   let usdToSat = Math.round(withdrawamount / current * 100000000)
 
 const returnvals   =  await sendBch_.SendBch(filename,user.BCHAddress,usdToSat,withdrawaddress)
-var obj = JSON.parse(returnvals);
-var keys = Object.keys(obj);
+
     //console.log(purchase)
-      if(!obj[keys[1]]) {
+      if(!returnvals.Ticket) {
         throw 'Failed to withdraw, please check address format and balance.'
       }
 
