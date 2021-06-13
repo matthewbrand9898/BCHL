@@ -23,6 +23,7 @@ router.post('/currentEntries', authorize(), currentEntries);
 router.post('/currentPrize', authorize(), currentPrize);
 router.post('/getwinningRNG', authorize(), getwinningRNG);
 router.post('/getwinningRNGHash', authorize(), getwinningRNGHash);
+router.post('/getTickets', authorize(), getTickets);
 
 module.exports = router;
 
@@ -158,6 +159,14 @@ async function currentPrize(req,res,next) {
 
 }
 
+
+function getTickets(req, res, next) {
+  
+  userService.getTickets(req.body)
+  .then(user => res.json(user))
+  .catch(next);
+
+}
 
 function buyticket(req, res, next) {
   userService.buyticket(req.body)

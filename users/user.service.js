@@ -30,7 +30,8 @@ module.exports = {
    currentEntries,
    currentPrize,
    getwinningRNG,
-   getwinningRNGHash
+   getwinningRNGHash,
+   getTickets
 };
 
 async function authenticate({ username, password }) {
@@ -230,6 +231,24 @@ async function getwinningRNGHash(winningRNGHash) {
 
 
   return winningRNGHash;
+    }
+    catch(err)
+     {
+  console.log(err);
+    }
+}
+
+async function getTickets(user) {
+
+  try {
+
+  ticketsql = await db.connection.query(`SELECT Ticket FROM UserData . Users WHERE id = ${user.id} `)
+
+    user.Ticket = ticketsql[0][0].Ticket
+
+
+
+  return user;
     }
     catch(err)
      {
