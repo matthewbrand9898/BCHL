@@ -110,7 +110,14 @@ class SendBCH  {
         let originalAmount = 0
         for (let i = 0; i < utxos_.length; i++) {
      const thisUtxo = utxos_[i]
-
+     const txout = await bchjs.Blockchain.getTxOut(thisUtxo.tx_hash, thisUtxo.tx_pos)
+        if (txout === null) {
+          // If the UTXO has already been spent, the full node will respond with null.
+          console.log(
+            'Stale UTXO found. You may need to wait for the indexer to catch up.'
+          )
+          continue
+        }
      inputs.push(thisUtxo)
 
      originalAmount += thisUtxo.value

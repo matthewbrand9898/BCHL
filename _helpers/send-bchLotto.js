@@ -132,10 +132,10 @@ class SendBCHLotto  {
         // get byte count to calculate fee. paying 1.2 sat/byte
         const byteCount = this.bchjs.BitcoinCash.getByteCount(
           { P2PKH: inputs.length },
-          { P2PKH: 1 }
+          { P2PKH: 2 }
         )
         console.log(`Transaction byte count: ${byteCount}`)
-        const satoshisPerByte = 1.5
+        const satoshisPerByte = 1.2
         const txFee = Math.floor(satoshisPerByte * byteCount)
         console.log(`Transaction fee: ${txFee}`)
 
