@@ -43,6 +43,13 @@ res.sendFile(path.join(__dirname, '/dist/index.html'));
 
 });
 
+app.get("/about", (req, res) => {
+
+
+res.sendFile(path.join(__dirname, '/dist/index.html'));
+
+});
+
 cron.schedule('0 0 * * *', function() {
   lottorun_.Lotto_run()
 });
