@@ -161,7 +161,7 @@ async function currentPrize(req,res,next) {
 
 
 function getTickets(req, res, next) {
-  
+
   userService.getTickets(req.body)
   .then(user => res.json(user))
   .catch(next);
@@ -169,7 +169,7 @@ function getTickets(req, res, next) {
 }
 
 function buyticket(req, res, next) {
-  userService.buyticket(req.body)
+  userService.buyticket(req.user)
   .then(user => res.json(user))
   .catch(next);
 

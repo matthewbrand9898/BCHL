@@ -93,6 +93,7 @@ async function update(id, params) {
         params.hash = await bcrypt.hash(params.password, 10);
     }
 
+
     // copy params to user and save
 
     Object.assign(user, params);
@@ -115,7 +116,7 @@ async function buyticket(user) {
 
   if(date.getHours() < 23) {
  let current = await bchjs.Price.getBchUsd();
- let usdToSat = Math.round(1 / current * 100000000)
+ let usdToSat = Math.round(5 / current * 100000000)
    const returnvalues = await sendBch_.SendBch(filename,user.BCHAddress,usdToSat,'bitcoincash:qrm9uly75rcn30f3v5amqy97dcn0zga2jqakkdmdu7')
 
 
@@ -123,7 +124,10 @@ async function buyticket(user) {
     if(returnvalues.Ticket) {
       user.Ticket ++
 
-       await update(user.id,user)
+      params = {
+        Ticket: user.Ticket
+      }
+       await update(user.id,params)
         await db.connection.query(`INSERT INTO UserData . BCHAddresses  (BCHAddress) VALUES ('${bchadd}');`);
 
       //  console.log(bchadd)
